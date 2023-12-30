@@ -1,0 +1,42 @@
+<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML//EN">
+<html> <head>
+<title>WebSocket test</title>
+    <script type="text/javascript">
+        document.addEventListener("DOMContentLoaded", function() {
+            // Connect to the WebSocket server
+            var socket = new WebSocket("ws://localhost:1234/ws");
+
+            // Connection opened
+            socket.addEventListener('open', function (event) {
+                console.log('Connected to the WebSocket server');
+            });
+
+            // Listen for messages
+            socket.addEventListener('message', function (event) {
+                console.log('Message from server:', event.data);
+                var message = JSON.parse(event.data);
+
+                // Decode the test message
+                if (message.type === 'test') {
+                    // Urggh pop-ups, but good for easy testing...
+                    alert("Test message received: " + message.data);
+                }
+            });
+
+            // Connection closed
+            socket.addEventListener('close', function (event) {
+                console.log('Disconnected from the WebSocket server');
+            });
+
+            // Handle any errors that occur
+            socket.addEventListener('error', function (event) {
+                console.error('WebSocket Error:', event);
+            });
+        });
+    </script>
+</head>
+
+<body>
+    <h1>WebSocket test page</h1>
+    <p>Open the console to see messages from the WebSocket server.</p>
+</body> </html>
